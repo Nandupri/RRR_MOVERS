@@ -34,7 +34,7 @@ SECRET_KEY = 'django-insecure-s*ar(k8*jtog!*@x$!a6@o6=re8jeh2)l_l(j)(m2^m*!c_2yx
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['RRR_Movers.com']
+ALLOWED_HOSTS = ['RRR_Movers.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
