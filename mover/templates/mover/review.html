@@ -1,0 +1,5 @@
+{% extends 'mover/base.html' %}
+{% block content %}
+<h2>Submit Your Review</h2>
+<form method="POST">{% csrf_token %}{{ form.as_p }}<button type="submit">Submit Review</button></form>
+{% endblock %}

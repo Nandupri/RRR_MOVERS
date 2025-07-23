@@ -1,0 +1,90 @@
+{% extends 'mover/base.html' %}
+{% block content %}
+<div class="dashboard-main">
+    <!-- Welcome Message -->
+    <div class="dashboard-welcome">
+        <h2>Welcome, {{ user.first_name|default:user.username }}! Here's your move summary.</h2>
+    </div>
+
+    <!-- Promotions/Offers -->
+    <div class="dashboard-promos">
+        <span class="promo-badge">🔥 10% OFF on all moves this month! Use code <b>MOVE10</b></span>
+        <span class="promo-badge">🎁 Free packing materials for first-time users!</span>
+    </div>
+
+    <!-- Upcoming Move Countdown -->
+    {% with next_booking=bookings|dictsort:'date'|first %}
+    {% if next_booking and next_booking.status == 'Confirmed' %}
+        <div class="dashboard-countdown">
+            <span class="material-symbols-outlined" style="vertical-align:middle;">event</span>
+            Only <span id="move-countdown"></span> left for your shifting to {{ next_booking.destination }}!
+        </div>
+        <script>
+        // Countdown JS
+        (function() {
+            var moveDate = new Date("{{ next_booking.date|date:'Y-m-d' }}T00:00:00");
+            var now = new Date();
+            var diff = Math.ceil((moveDate - now) / (1000*60*60*24));
+            document.getElementById('move-countdown').innerText = (diff > 0 ? diff + ' days' : 'Today');
+        })();
+        </script>
+    {% endif %}
+    {% endwith %}
+
+    <!-- My Bookings Section -->
+    <div class="dashboard-section">
+        <h3>My Bookings</h3>
+        <table class="dashboard-table">
+            <tr><th>Origin</th><th>Destination</th><th>Date</th><th>Status</th><th>Actions</th></tr>
+            {% for b in bookings %}
+            <tr>
+                <td>{{ b.origin }}</td>
+                <td>{{ b.destination }}</td>
+                <td>{{ b.date }}</td>
+                <td><span class="status-badge status-{{ b.status|lower }}">{{ b.status }}</span></td>
+                <td>
+                    {% if b.status == 'Pending' %}
+                        <form method="post" action="{% url 'cancel_booking' b.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-cancel" onclick="return confirm('Are you sure you want to cancel this booking?');">Cancel</button>
+                        </form>
+                    {% endif %}
+                    <a href="/status/{{ b.id }}/" class="btn-view">View Invoice</a>
+                    {% if b.status == 'Completed' %}
+                        <a href="/review/{{ b.id }}/" class="btn-review">Review</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5">No bookings yet.</td></tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- Quote Request Tracker (example) -->
+    <div class="dashboard-section">
+        <h3>Quote Request Tracker</h3>
+        <div class="quote-tracker">
+            <span class="material-symbols-outlined" style="vertical-align:middle;">hourglass_top</span>
+            Your quote for Chennai → Hyderabad is being processed.
+        </div>
+    </div>
+
+    <!-- Review & Feedback Form (example for completed move) -->
+    <div class="dashboard-section">
+        <h3>Review & Feedback</h3>
+        <form class="review-form">
+            <label>Rate your move:</label>
+            <span class="star-rating">
+                <input type="radio" name="rating" value="1"><span>★</span>
+                <input type="radio" name="rating" value="2"><span>★</span>
+                <input type="radio" name="rating" value="3"><span>★</span>
+                <input type="radio" name="rating" value="4"><span>★</span>
+                <input type="radio" name="rating" value="5"><span>★</span>
+            </span>
+            <textarea placeholder="Leave your feedback..."></textarea>
+            <button type="submit" class="btn-main">Submit Review</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
