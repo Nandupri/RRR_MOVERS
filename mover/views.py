@@ -1,3 +1,9 @@
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+# Logout view
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 from django.contrib.auth.decorators import login_required
 @login_required
 def cancel_booking(request, booking_id):

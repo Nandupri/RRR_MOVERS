@@ -11,4 +11,5 @@ urlpatterns = [
     path('review/<int:booking_id>/', views.submit_review, name='submit_review'),
     path('contact/', views.contact, name='contact'),
     path('cancel/<int:booking_id>/', views.cancel_booking, name='cancel_booking'),
+    path('logout/', views.logout_view, name='logout'),
 ]
