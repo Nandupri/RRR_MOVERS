@@ -32,9 +32,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-s*ar(k8*jtog!*@x$!a6@o6=re8jeh2)l_l(j)(m2^m*!c_2yx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['RRR_MOVERS.pythonanywhere.com', 'localhost', '127.0.0.1']  # Allow all hosts for development; change in production
 
 
 # Application definition
@@ -58,7 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     
 ]
 
